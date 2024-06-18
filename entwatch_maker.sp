@@ -8,7 +8,7 @@ public Plugin myinfo =
     name = "EntWatch Config Maker",
     author = "tilgep",
     description = "Makes a basic EntWatch config for the current map.",
-    version = "1.3.1",
+    version = "1.3.2",
     url = "https://github.com/tilgep/EntWatch-Maker"
 };
 
@@ -210,17 +210,17 @@ public int LoadConfig()
         for(int w = 0; w < ent.Length; w++)
         {
             ent.Get(w, key, 64, val, 128);
-            if(StrEqual(key, "classname")) knife = StrEqual(val, "weapon_knife");
-            else if(StrEqual(key, "targetname"))strcopy(targe, sizeof(targe), val);
-            else if(StrEqual(key, "hammerid"))
+            if(strcmp(key, "classname", false) == 0) knife = strcmp(val, "weapon_knife", false) == 0;
+            else if(strcmp(key, "targetname", false) == 0) strcopy(targe, sizeof(targe), val);
+            else if(strcmp(key, "hammerid", false) == 0)
             {
                 strcopy(hammer, sizeof(hammer), val);
                 mapweapon = true;
             }
-            else if(StrEqual(key, "OnPlayerPickup", false))
+            else if(strcmp(key, "OnPlayerPickup", false) == 0)
             {
                 ExplodeString(val, "", output, 5, 32, true);
-                if(StrEqual(output[1], "Activate")) gameui = true;
+                if(strcmp(output[1], "Activate", false) == 0) gameui = true;
             }
         }
 
@@ -234,7 +234,7 @@ public int LoadConfig()
         {
             button = EntityLump.Get(buts.Get(b));
             button.GetNextKey("parentname", paren, 64);
-            if(!StrEqual(paren, targe))
+            if(strcmp(paren, targe, false) != 0)
             {
                 delete button;
                 continue;
@@ -246,7 +246,7 @@ public int LoadConfig()
             while(fi != -1)
             {
                 ExplodeString(val, "", output, 5, 32, true);
-                if(StrEqual(output[1], "TestActivator")) break;
+                if(strcmp(output[1], "TestActivator", false) == 0) break;
                 fi = button.GetNextKey("OnPressed", val, sizeof(val), fi);
             }
 
@@ -258,7 +258,7 @@ public int LoadConfig()
                 {
                     filterr = EntityLump.Get(filt.Get(f));
                     filterr.GetNextKey("targetname", ftargetname, sizeof(ftargetname));
-                    if(!StrEqual(ftargetname, output[0])) continue;
+                    if(strcmp(ftargetname, output[0], false) != 0) continue;
 
                     filterr.GetNextKey("filtername", filter, sizeof(filter));
                     filterr.GetNextKey("hammerid", filterid, sizeof(filterid));
@@ -281,10 +281,10 @@ public int LoadConfig()
                 for(int u = 0; u < template.Length; u++)
                 {
                     template.Get(u, key, 64, val, 128);
-                    if(StrEqual(key, "targetname")) strcopy(templatename, sizeof(templatename), val);
+                    if(strcmp(key, "targetname", false) == 0) strcopy(templatename, sizeof(templatename), val);
                     else if(!found && strncmp(key, "Template", 8) == 0)
                     {
-                        if(StrEqual(val, targe))
+                        if(strcmp(val, targe, false) == 0)
                         {
                             found = true;
                         }
